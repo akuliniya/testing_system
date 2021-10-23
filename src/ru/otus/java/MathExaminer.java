@@ -46,22 +46,12 @@ public class MathExaminer {
         score = countScore(CORRECT_ANSWERS_INDEXES, selectedAnswersIndexes);
 
         switch (score) {
-            case 3:
-                printResult(Result.PERFECT, score);
-                break;
-            case 2:
-                printResult(Result.GOOD, score);
-                break;
-            case 1:
-                printResult(Result.SATISFACTORY, score);
-                break;
-            case 0:
-                printResult(Result.BAD, score);
-                break;
-            default:
-                System.out.println("Неизвестная ошибка. Такого количества баллов вы не могли набрать ["+ score + "]./n" +
+            case 3 -> printResult(Result.PERFECT, score);
+            case 2 -> printResult(Result.GOOD, score);
+            case 1 -> printResult(Result.SATISFACTORY, score);
+            case 0 -> printResult(Result.BAD, score);
+            default -> System.out.println("Неизвестная ошибка. Такого количества баллов вы не могли набрать ["+ score + "]./n" +
                         "Попробуйте пройти тест еще раз.");
-                break;
         }
 
         if (isTestPassed(CORRECT_ANSWERS_INDEXES, selectedAnswersIndexes))
@@ -72,13 +62,9 @@ public class MathExaminer {
             try {
                 int isNeedMoreDetails = readAnswer();
                 switch (isNeedMoreDetails) {
-                    case 1:
-                        showDetails(CORRECT_ANSWERS_INDEXES, selectedAnswersIndexes);
-                        break;
-                    case 0:
-                        System.exit(1);
-                    default:
-                        System.out.println(INCORRECT_INPUT);
+                    case 1 -> showDetails(CORRECT_ANSWERS_INDEXES, selectedAnswersIndexes);
+                    case 0 -> System.exit(1);
+                    default -> System.out.println(INCORRECT_INPUT);
                 }
             } catch (InputMismatchException e) {
                 printException(e);
