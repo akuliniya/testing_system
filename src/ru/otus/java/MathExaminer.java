@@ -63,7 +63,7 @@ public class MathExaminer {
                 int isNeedMoreDetails = readAnswer();
                 switch (isNeedMoreDetails) {
                     case 1 -> showDetails(CORRECT_ANSWERS_INDEXES, selectedAnswersIndexes);
-                    case 0 -> System.exit(1);
+                    case 0 -> System.exit(0);
                     default -> System.out.println(INCORRECT_INPUT);
                 }
             } catch (InputMismatchException e) {
