@@ -12,31 +12,38 @@ public class MathExaminer {
             {16, 17, 18}
     };
     private static final int[] CORRECT_ANSWERS_INDEXES = {1, 2, 1,};
+    private static final String INCORRECT_INPUT = "Введено некорректное значение";
+    private static final String INCORRECT_ANSWER_NUMBER = "Вы ввели несуществующий номер ответа.";
 
     public static void main(String[] args) {
+        int[] selectedAnswersIndexes = new int[QUESTIONS_FOR_TEST.length];
         int score;
-        int[] selectedVariantsIndexes = new int[QUESTIONS_FOR_TEST.length];
-        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Введите номер варианта ответа и нажмите Enter.");
 
         for (int i = 0; i < QUESTIONS_FOR_TEST.length; i++) {
-            System.out.println("Введите номер варианта ответа и нажмите Enter.");
             System.out.println(QUESTIONS_FOR_TEST[i]);
+
             for (int j = 0; j < ANSWERS_FOR_QUESTIONS[i].length; j++) {
                 System.out.println((j + 1) + ". " + ANSWERS_FOR_QUESTIONS[i][j]);
             }
             System.out.println("Ответ: ");
+
+            int selectedAnswerNumber;
             try {
-                selectedVariantsIndexes[i] = scanner.nextInt() - 1;
-                // TODO: Добавить проверку на неверный номер ответап
+                selectedAnswerNumber = readAnswer();
+                int selectedAnswerIndex = convertNumToIndex(selectedAnswerNumber);
+                if (isAnswerInRange(selectedAnswerIndex, ANSWERS_FOR_QUESTIONS[i]))
+                    selectedAnswersIndexes[i] = selectedAnswerIndex;
+                else
+                    System.out.println(INCORRECT_ANSWER_NUMBER);
             }catch (InputMismatchException e) {
-                System.out.println("Кажется вы ввели не число. Возникла ошибка " + e);
-                e.printStackTrace();
+                printException(e);
                 System.exit(1);
             }
-
         }
 
-        score = countScore(CORRECT_ANSWERS_INDEXES, selectedVariantsIndexes);
+        score = countScore(CORRECT_ANSWERS_INDEXES, selectedAnswersIndexes);
 
         switch (score) {
             case 3:
@@ -57,33 +64,38 @@ public class MathExaminer {
                 break;
         }
 
-        if (isTestPassed(CORRECT_ANSWERS_INDEXES, selectedVariantsIndexes))
+        if (isTestPassed(CORRECT_ANSWERS_INDEXES, selectedAnswersIndexes))
             System.out.println("Тест пройден. Вы ответили верно на все вопросы!");
         else {
             System.out.println("В ответах есть ошибки. Попробуйте еще раз.");
             System.out.println("Показать детали? (1 - 'Да', 0 - 'Нет')");
             try {
-                int moreDetails = scanner.nextInt();
-                if (moreDetails == 1)
-                    showDetails(CORRECT_ANSWERS_INDEXES, selectedVariantsIndexes);
-                else {
-                    if (moreDetails == 0)
-                        System.exit(0);
-                    else
-                        System.out.println("Введено некорректное значение");
+                int isNeedMoreDetails = readAnswer();
+                switch (isNeedMoreDetails) {
+                    case 1:
+                        showDetails(CORRECT_ANSWERS_INDEXES, selectedAnswersIndexes);
+                        break;
+                    case 0:
+                        System.exit(1);
+                    default:
+                        System.out.println(INCORRECT_INPUT);
                 }
-            } catch(InputMismatchException e) {
-                System.out.println("Кажется вы ввели не число. Возникла ошибка " + e);
-                e.printStackTrace();
+            } catch (InputMismatchException e) {
+                printException(e);
                 System.exit(1);
             }
-
         }
     }
 
-    private static void showDetails(int[] correctAnswersIndexes, int[] selectedVariantsIndexes) {
+    private static int readAnswer() {
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextInt();
+    }
+
+     private static void showDetails(int[] correctAnswersIndexes, int[] selectedAnswersIndexes) {
         for (int i = 0; i < correctAnswersIndexes.length; i++){
-            System.out.println("Правильный ответ: "  +  indexToNum(correctAnswersIndexes[i]) + ". Ваш ответ: " + indexToNum(selectedVariantsIndexes[i])+ ".");;
+            System.out.println("Правильный ответ: "  +  convertIndexToNum(correctAnswersIndexes[i])
+                    + ". Ваш ответ: " + convertIndexToNum(selectedAnswersIndexes[i]) + ".");
         }
     }
 
@@ -91,22 +103,35 @@ public class MathExaminer {
        System.out.println("Вы набрали баллов: " + score + ". Ваша оценка: " + result);
     }
 
-    private static int countScore(int[] correctAnswersIndexes, int[] selectedVariantsIndexes){
+    private static int countScore(int[] correctAnswersIndexes, int[] selectedAnswersIndexes){
         int score = 0;
 
         for (int i = 0; i < correctAnswersIndexes.length; i++) {
-                if (correctAnswersIndexes[i] == selectedVariantsIndexes[i])
+                if (correctAnswersIndexes[i] == selectedAnswersIndexes[i])
                     score++;
         }
         return score;
     }
 
-    private static boolean isTestPassed(int[] correctAnswersIndexes, int[] selectedVariantsIndexes) {
-        return Arrays.equals(correctAnswersIndexes, selectedVariantsIndexes);
+    private static boolean isTestPassed(int[] correctAnswersIndexes, int[] selectedAnswersIndexes) {
+        return Arrays.equals(correctAnswersIndexes, selectedAnswersIndexes);
     }
 
-    private static int indexToNum(int index) {
-        return index+1;
+    private static int convertIndexToNum(int index) {
+        return ++index;
+    }
+
+    private static int convertNumToIndex(int number) {
+        return --number;
+    }
+
+    private static boolean isAnswerInRange(int answerIndex, int[] answersForQuestion) {
+        return (answerIndex < answersForQuestion.length) && (answerIndex >= 0);
+    }
+
+    private static void printException(InputMismatchException e) {
+        System.out.println("Кажется вы ввели не число. Возникла ошибка " + e);
+        e.printStackTrace();
     }
 
 }
