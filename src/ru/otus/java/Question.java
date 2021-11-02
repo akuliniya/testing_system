@@ -1,5 +1,9 @@
 package ru.otus.java;
 
+import java.util.InputMismatchException;
+
+import static ru.otus.java.ExamService.*;
+
 public class Question {
     private final int questionNumber;
     private final String questionText;
