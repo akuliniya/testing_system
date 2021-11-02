@@ -63,8 +63,10 @@ public class Examiner {
             selectedAnswer = new Answer(Answer.readAnswer());
             if (Answer.isAnswerInRange(selectedAnswer.getAnswerNumber(), question.getAnswersForQuestion().length)) {
                 question.setSelectedAnswer(selectedAnswer);
-            } else
+            } else{
                 System.out.println(Answer.INCORRECT_ANSWER_NUMBER);
+                System.exit(1);
+            }
         } catch (InputMismatchException e) {
             printException(e);
             System.exit(1);

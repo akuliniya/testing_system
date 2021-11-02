@@ -3,7 +3,7 @@ package ru.otus.java;
 import java.util.Scanner;
 
 public class Answer {
-    public static final String INCORRECT_ANSWER_NUMBER = "Вы ввели несуществующий номер ответа.";
+    public static final String INCORRECT_ANSWER_NUMBER = "Вы ввели несуществующий номер ответа. Начните заново";
     public static final String INCORRECT_INPUT = "Введено некорректное значение";
 
     private final int answerNumber;
