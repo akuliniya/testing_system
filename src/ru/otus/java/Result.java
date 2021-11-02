@@ -46,4 +46,8 @@ public class Result {
                     + ". Ваш ответ: " + question.getSelectedAnswer().getAnswerNumber() + ".");
         }
     }
+
+    public void printResult(Result testResult) {
+        System.out.println("Вы набрали баллов: " + testResult.getScore() + ". Ваша оценка: " + testResult.getEstimation());
+    }
 }

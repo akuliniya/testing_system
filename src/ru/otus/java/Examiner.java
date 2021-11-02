@@ -78,9 +78,9 @@ public class Examiner {
         test.getTestResult().setEstimation(test.getTestResult().getScore());
         if (isTestPassed(test)) {
             System.out.println("Тест пройден. Вы ответили верно на все вопросы!");
-            printResult(test.getTestResult());
+            mathTestResult.printResult(test.getTestResult());
         } else {
-            printResult(test.getTestResult());
+            mathTestResult.printResult(test.getTestResult());
             System.out.println("В ответах есть ошибки.");
             System.out.println("Показать детали? (1 - 'Да', 0 - 'Нет')");
             try {
@@ -95,10 +95,6 @@ public class Examiner {
                 System.exit(1);
             }
         }
-    }
-
-    private static void printResult(Result testResult) {
-        System.out.println("Вы набрали баллов: " + testResult.getScore() + ". Ваша оценка: " + testResult.getEstimation());
     }
 
     private static void printException(InputMismatchException e) {
